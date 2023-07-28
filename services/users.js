@@ -44,9 +44,22 @@ const updateUser = async (pk_user, name, status) => {
     }
 }
 
+/**
+ * Delete an especific user
+ * @param {number} pk_user User id
+ * @returns {{pk_user: 1, name: "Juan"}}
+ */
+const deleteUser = async (pk_user) => {
+    try {
+        return await usersModel.deleteUser(pk_user)
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 
 module.exports = {
     getUser,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
