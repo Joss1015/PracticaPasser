@@ -22,7 +22,6 @@ const getUser = async (pk_user) => {
  */
 const createUser = async (pk_user, name, status) => {
     try {
-        console.log("usuario: ",pk_user,name,status)
         return usersModel.createUser(pk_user, name, status)
     } catch (e) {
         throw new Error(e.message)
