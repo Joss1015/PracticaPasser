@@ -6,7 +6,7 @@ const { postgresql } = require('../databases/postgresql')
  * @param {number} fk_user User foreign key
  * @param {string} description Transaction description
  * @param {float} amount Transaction amount
- * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} User object
+ * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} Transaction object
  */
 const createTransaction = (pk_transaction , fk_user, description, amount) => {
     try {
@@ -20,7 +20,7 @@ const createTransaction = (pk_transaction , fk_user, description, amount) => {
 /**
  * Get an specific transaction
  * @param {number} pk_transaction Transaction primary key
- * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} User object Transaction schemas                              
+ * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} Transaction object                              
  */
 const getTransaction = async (pk_transaction) => {
     try {
@@ -30,9 +30,32 @@ const getTransaction = async (pk_transaction) => {
       console.error('Error al obtener la transaccion:', error.message);
       throw new Error(error.message);
     }
-  };
+};
+
+/**
+ * Update an specific transaction
+ * @param {number} pk_transaction Transaction primary key
+ * @param {number} fk_user User foreign key
+ * @param {string} description Transaction description
+ * @param {float} amount Transaction amount
+ * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} Transaction object
+ */
+const updateTransaction = async (pk_transaction , fk_user, description, amount) => {
+    try {
+        await postgresql.public.none(`UPDATE transactions SET fk_user = '${fk_user}', description = '${description}', amount = '${amount}' WHERE pk_transaction  = '${pk_transaction}'`);
+        
+        //Obtener transacción actualizada
+        let updateTransaction = await getTransaction(pk_transaction);
+        console.log('Transacción actualizada correctamente:', updateTransaction);
+        return({ message: `Transacción actualizada correctamente: `,updateTransaction });
+    } catch (error) {
+        console.error('Error al actualizar la transacción:', error.message);
+        throw new Error(error.message);
+    }
+};
 
 module.exports = {
     createTransaction,
-    getTransaction
+    getTransaction,
+    updateTransaction
 }
