@@ -17,6 +17,22 @@ const createTransaction = (pk_transaction , fk_user, description, amount) => {
     }
 }
 
+/**
+ * Get an specific transaction
+ * @param {number} pk_transaction Transaction primary key
+ * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} User object Transaction schemas                              
+ */
+const getTransaction = async (pk_transaction) => {
+    try {
+      let transaction = await postgresql.public.one(`SELECT * FROM transactions WHERE pk_transaction = '${pk_transaction}'`);
+      return (transaction);
+    } catch (error) {
+      console.error('Error al obtener la transaccion:', error.message);
+      throw new Error(error.message);
+    }
+  };
+
 module.exports = {
-    createTransaction
+    createTransaction,
+    getTransaction
 }
