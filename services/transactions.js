@@ -45,9 +45,23 @@ const updateTransaction = async (pk_transaction, fk_user, description, amount) =
     }
 }
 
+/**
+ * Get all transaction with fk_user
+ * @param {number} fk_user User foreign key
+ * @returns {{pk_transaction: number , fk_user: number, description: string, amount: float}} Transaction object                              
+ */
+const getAllTransaction = async (fk_user) => {
+    try {
+        return await usersModel.getAllTransaction(fk_user)
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 
 module.exports = {
     createTransaction,
     getTransaction,
-    updateTransaction
+    updateTransaction,
+    getAllTransaction
 }
